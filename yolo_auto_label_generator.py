@@ -109,8 +109,8 @@ for image in images:
         end_x = start_x + box_width
         end_y = start_y + box_height
 
-        box_color = colors[predicted_id]
-        box_color = [int(each) for each in box_color]
+        #box_color = colors[predicted_id]
+        #box_color = [int(each) for each in box_color]
 
         label = "{} :{:.1f}%".format(label, confidence*100)
     
@@ -118,17 +118,17 @@ for image in images:
         center_y_normalized = (start_y + end_y)/2/img_height
         box_width_normalized = box_width/img_width
         box_height_normalized = box_height/img_height
-        print(predicted_id, center_x_normalized, center_y_normalized, box_width_normalized, box_height_normalized)
 
-        to_write = str(predicted_id) + " " + str(center_x_normalized) + " " + str(center_y_normalized) + " " + str(box_width_normalized) + " " + str(box_height_normalized)
-        file = open("images/" + image.split(".")[0] + ".txt", "w")
+        to_write = str(predicted_id) + " " + str(center_x_normalized) + " " + str(center_y_normalized) + " " + str(box_width_normalized) + " " + str(box_height_normalized) + "\n"
+        file = open("images/" + image.split(".")[0] + ".txt", "a")
         file.write(to_write)
         file.close()
 
-        cv.rectangle(img, (start_x, start_y), (end_x, end_y), box_color, 1)
-        cv.putText(img, label, (start_x, start_y-10), cv.FONT_HERSHEY_PLAIN, 1, box_color, 1)
-
+        #cv.rectangle(img, (start_x, start_y), (end_x, end_y), box_color, 1)
+        #cv.putText(img, label, (start_x, start_y-10), cv.FONT_HERSHEY_PLAIN, 1, box_color, 1)
+"""
     cv.imshow("Detection Frame", img)
 
     cv.waitKey(0)
     cv.destroyAllWindows()
+"""
