@@ -1,0 +1,4 @@
+closed_eye
+open_eye
+not_yawning_mouth
+yawning_mouth

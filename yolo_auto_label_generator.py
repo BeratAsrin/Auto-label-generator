@@ -21,14 +21,15 @@ def resize_with_padding(img, expected_size):
     padding = (pad_width, pad_height, delta_width - pad_width, delta_height - pad_height)
     return ImageOps.expand(img, padding)
 
-path = "images"
+path = "/home/isuzu/Desktop/berat_asrin/RGBs/test/subject8"
 images = os.listdir(path)
 images = list(filter(lambda x: '.jpg' in x, images))
-
+counter = 0
 for image in images:
-    img_location_and_name = "images/" + image
+    counter = counter + 1
+    img_location_and_name = path + "/" + image
     cfg_location = "cfg/yolov4-tiny-object-detection.cfg"
-    weight_location = "weights/yolov4-tiny-object-detection_best.weights"
+    weight_location = "weights/yolov4_drowsiness_last.weights"
 
     # Resize image to achieve same aspect ratio
     img = Image.open(img_location_and_name)
@@ -50,10 +51,10 @@ for image in images:
 
     img_blob = cv.dnn.blobFromImage(img, 1/255, (416,416), swapRB=True, crop=False)
 
-    labels = ["strawberry",
-    "apple",
-    "tomato",
-    "lemon"]
+    labels = ["closed_eye",
+	"open_eye",
+	"not_yawning_mouth",
+	"yawning_mouth"]
 
     colors = ["0,255,0", "0,0,255", "0,0,255", "255,0,255", "255,255,0"]
     colors = [np.array(color.split(",")).astype("int") for color in colors]
@@ -93,7 +94,7 @@ for image in images:
     max_ids = cv.dnn.NMSBoxes(boxes_list, confidences_list, 0.5, 0.4)
 
     for max_id in max_ids:
-    
+    	
         max_class_id = max_id[0]
         box = boxes_list[max_class_id]
 
@@ -120,10 +121,10 @@ for image in images:
         box_height_normalized = box_height/img_height
 
         to_write = str(predicted_id) + " " + str(center_x_normalized) + " " + str(center_y_normalized) + " " + str(box_width_normalized) + " " + str(box_height_normalized) + "\n"
-        file = open("images/" + image.split(".")[0] + ".txt", "a")
+        file = open(path + "/" + image.split(".")[0] + ".txt", "a")
         file.write(to_write)
         file.close()
-
+        print(str(counter) + "/" + str(len(images)))
         #cv.rectangle(img, (start_x, start_y), (end_x, end_y), box_color, 1)
         #cv.putText(img, label, (start_x, start_y-10), cv.FONT_HERSHEY_PLAIN, 1, box_color, 1)
 """
